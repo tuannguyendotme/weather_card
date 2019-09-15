@@ -6,11 +6,21 @@ import 'package:provider/provider.dart';
 import 'package:weather_card/helpers/ui_helper.dart';
 import 'package:weather_card/services/weather_forecast_service.dart';
 
-class WeatherForecast extends StatelessWidget {
+class WeatherForecast extends StatefulWidget {
+  @override
+  _WeatherForecastState createState() => _WeatherForecastState();
+}
+
+class _WeatherForecastState extends State<WeatherForecast> {
+  int _currentIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return Consumer<WeatherForecastService>(
-      builder: (context, weatherForecastService, child) => Container(
+        builder: (context, weatherForecastService, child) {
+      final currentItem = weatherForecastService.items[_currentIndex];
+
+      return Container(
         padding: EdgeInsets.all(20),
         color: Color.fromARGB(255, 45, 55, 72),
         height: 320,
@@ -22,14 +32,14 @@ class WeatherForecast extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  'PRESURE',
+                  'PRESSURE',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,
                   ),
                 ),
                 Text(
-                  '10',
+                  currentItem.pressure.toString(),
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,
@@ -51,7 +61,7 @@ class WeatherForecast extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '29%',
+                  '${currentItem.humidity}%',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,
@@ -73,7 +83,7 @@ class WeatherForecast extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '12 Mph',
+                  '${currentItem.wind} Mph',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,
@@ -92,43 +102,63 @@ class WeatherForecast extends StatelessWidget {
                   itemCount: weatherForecastService.items.length,
                   itemBuilder: (context, index) {
                     final forecastItem = weatherForecastService.items[index];
+                    final backgroundColor = _currentIndex == index
+                        ? Colors.white
+                        : Color.fromARGB(255, 26, 32, 44);
+                    final foregroundColor =
+                        _currentIndex == index ? Colors.black : Colors.white;
 
-                    return Row(
-                      children: <Widget>[
-                        Container(
-                          width: 86,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            color: Colors.white,
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Icon(UiHelper.getIconData(forecastItem.icon)),
-                              SizedBox(height: 10),
-                              Text(DateFormat('EEE, hh a')
-                                  .format(forecastItem.date)),
-                              SizedBox(height: 6),
-                              Text(
-                                '${forecastItem.temprature}°C',
-                                style: TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
+                    return GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _currentIndex = index;
+                        });
+                      },
+                      child: Row(
+                        children: <Widget>[
+                          Container(
+                            width: 86,
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)),
+                              color: backgroundColor,
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Icon(
+                                  UiHelper.getIconData(forecastItem.icon),
+                                  color: foregroundColor,
                                 ),
-                              ),
-                            ],
+                                SizedBox(height: 10),
+                                Text(
+                                  DateFormat('EEE, hh a')
+                                      .format(forecastItem.date),
+                                  style: TextStyle(color: foregroundColor),
+                                ),
+                                SizedBox(height: 6),
+                                Text(
+                                  '${forecastItem.temprature}°C',
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                    color: foregroundColor,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          width: 2,
-                        ),
-                      ],
+                          SizedBox(
+                            width: 2,
+                          ),
+                        ],
+                      ),
                     );
                   }),
             ),
           ],
         ),
-      ),
-    );
+      );
+    });
   }
 }
