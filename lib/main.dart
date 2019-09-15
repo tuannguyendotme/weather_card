@@ -1,18 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'package:weather_card/screens/home_screen.dart';
+import 'package:weather_card/services/current_weather_service.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Weather Card',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(
+          value: CurrentWeatherService(),
+        )
+      ],
+      child: MaterialApp(
+        title: 'Weather Card',
+        home: HomeScreen(),
       ),
-      home: HomeScreen(),
     );
   }
 }

@@ -1,17 +1,53 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:weather_card/services/current_weather_service.dart';
 
 import 'package:weather_card/widgets/four_days_forecast.dart';
-import 'package:weather_card/widgets/today_weather.dart';
+import 'package:weather_card/widgets/current_weather.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  Future _initialLoad;
+
+  @override
+  void initState() {
+    super.initState();
+
+    final currentWeatherService =
+        Provider.of<CurrentWeatherService>(context, listen: false);
+    _initialLoad = currentWeatherService.fetch();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: <Widget>[
-          TodayWeather(),
-          FourDaysForecast(),
-        ],
+      body: FutureBuilder(
+        future: _initialLoad,
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+
+            case ConnectionState.done:
+              return Column(
+                children: <Widget>[
+                  CurrentWeather(),
+                  FourDaysForecast(),
+                ],
+              );
+
+            default:
+              return Center(
+                child: Text('Something went wrong.'),
+              );
+          }
+        },
       ),
     );
   }
