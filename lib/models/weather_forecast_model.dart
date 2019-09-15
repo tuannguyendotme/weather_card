@@ -29,5 +29,5 @@ class WeatherForecastModel {
         icon = json['weather'][0]['icon'],
         pressure = json['main']['pressure'],
         humidity = json['main']['humidity'],
-        wind = json['main']['speed'];
+        wind = json['wind']['speed'];
 }
