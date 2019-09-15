@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:weather_card/services/current_weather_service.dart';
 import 'package:weather_card/services/weather_forecast_service.dart';
 
-import 'package:weather_card/widgets/four_days_forecast.dart';
+import 'package:weather_card/widgets/weather_forecast.dart';
 import 'package:weather_card/widgets/current_weather.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -48,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
               return Column(
                 children: <Widget>[
                   CurrentWeather(),
-                  FourDaysForecast(),
+                  WeatherForecast(),
                 ],
               );
 

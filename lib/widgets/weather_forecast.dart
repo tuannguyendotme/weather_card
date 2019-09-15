@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:weather_card/helpers/ui_helper.dart';
 import 'package:weather_card/services/weather_forecast_service.dart';
 
-class FourDaysForecast extends StatelessWidget {
+class WeatherForecast extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<WeatherForecastService>(
