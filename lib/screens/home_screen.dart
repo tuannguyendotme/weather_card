@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+
 import 'package:provider/provider.dart';
+
 import 'package:weather_card/services/current_weather_service.dart';
+import 'package:weather_card/services/weather_forecast_service.dart';
 
 import 'package:weather_card/widgets/four_days_forecast.dart';
 import 'package:weather_card/widgets/current_weather.dart';
@@ -19,7 +22,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
     final currentWeatherService =
         Provider.of<CurrentWeatherService>(context, listen: false);
-    _initialLoad = currentWeatherService.fetch();
+    final weatherForecastService =
+        Provider.of<WeatherForecastService>(context, listen: false);
+
+    final List<Future> futures = [];
+    futures.add(currentWeatherService.fetch());
+    futures.add(weatherForecastService.fetch());
+
+    _initialLoad = Future.wait(futures);
   }
 
   @override

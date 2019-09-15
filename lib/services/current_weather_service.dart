@@ -17,8 +17,6 @@ class CurrentWeatherService with ChangeNotifier {
 
     value = CurrentWeatherModel.fromJson(responseData);
 
-    print(value.date);
-
     notifyListeners();
   }
 }

@@ -6,7 +6,7 @@ import 'package:latlong/latlong.dart';
 import 'package:provider/provider.dart';
 
 import 'package:weather_card/.env.dart';
-import 'package:weather_card/models/current_weather_model.dart';
+import 'package:weather_card/helpers/ui_helper.dart';
 import 'package:weather_card/services/current_weather_service.dart';
 
 class CurrentWeather extends StatelessWidget {
@@ -136,7 +136,7 @@ class CurrentWeatherInfo extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(right: 28),
                     child: Icon(
-                      currentWeather.getIconData(),
+                      UiHelper.getIconData(currentWeather.icon),
                       size: 70,
                     ),
                   ),
