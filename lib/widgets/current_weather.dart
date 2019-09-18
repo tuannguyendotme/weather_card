@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:weather_card/.env.dart';
 import 'package:weather_card/helpers/ui_helper.dart';
 import 'package:weather_card/services/current_weather_service.dart';
+import 'package:weather_card/services/location_service.dart';
 
 class CurrentWeather extends StatelessWidget {
   @override
@@ -29,21 +30,27 @@ class CurrentWeather extends StatelessWidget {
 class Map extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return FlutterMap(
-      options: MapOptions(
-        center: LatLng(51.5, -0.09),
-        zoom: 13.0,
-      ),
-      layers: [
-        new TileLayerOptions(
-          urlTemplate:
-              "https://api.mapbox.com/styles/v1/t800t8/ck0hxusqi12if1cpdj034jsw6/tiles/256/{z}/{x}/{y}@2x?access_token=${Configuration.MapBoxApiKey}",
-          additionalOptions: {
-            'accessToken': Configuration.MapBoxApiKey,
-            'id': 'mapbox.streets',
-          },
-        ),
-      ],
+    return Consumer<LocationService>(
+      builder: (context, locationService, child) {
+        final position = locationService.position;
+
+        return FlutterMap(
+          options: MapOptions(
+            center: LatLng(position.latitude, position.longitude),
+            zoom: 13.0,
+          ),
+          layers: [
+            new TileLayerOptions(
+              urlTemplate:
+                  "https://api.mapbox.com/styles/v1/t800t8/ck0hxusqi12if1cpdj034jsw6/tiles/256/{z}/{x}/{y}@2x?access_token=${Configuration.MapBoxApiKey}",
+              additionalOptions: {
+                'accessToken': Configuration.MapBoxApiKey,
+                'id': 'mapbox.streets',
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

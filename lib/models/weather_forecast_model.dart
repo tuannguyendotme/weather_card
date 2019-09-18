@@ -27,7 +27,7 @@ class WeatherForecastModel {
       : date = DateTime.parse(json['dt_txt']),
         temprature = double.parse(json['main']['temp'].toString()).toInt(),
         icon = json['weather'][0]['icon'],
-        pressure = json['main']['pressure'],
+        pressure = double.parse(json['main']['pressure'].toString()),
         humidity = json['main']['humidity'],
-        wind = json['wind']['speed'];
+        wind = double.parse(json['wind']['speed'].toString());
 }
