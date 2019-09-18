@@ -8,7 +8,12 @@ import 'package:weather_card/services/weather_forecast_service.dart';
 import 'package:weather_card/widgets/weather_forecast.dart';
 import 'package:weather_card/widgets/current_weather.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   Future load(BuildContext context) async {
     final locationService =
         Provider.of<LocationService>(context, listen: false);
@@ -42,7 +47,11 @@ class HomeScreen extends StatelessWidget {
             case ConnectionState.done:
               return Column(
                 children: <Widget>[
-                  CurrentWeather(),
+                  CurrentWeather(
+                    onRefresh: () {
+                      setState(() {});
+                    },
+                  ),
                   WeatherForecast(),
                 ],
               );

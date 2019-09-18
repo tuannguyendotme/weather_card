@@ -11,6 +11,10 @@ import 'package:weather_card/services/current_weather_service.dart';
 import 'package:weather_card/services/location_service.dart';
 
 class CurrentWeather extends StatelessWidget {
+  final Function onRefresh;
+
+  const CurrentWeather({@required this.onRefresh});
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -20,7 +24,7 @@ class CurrentWeather extends StatelessWidget {
           Container(
             color: Color.fromARGB(50, 45, 55, 72),
           ),
-          CurrentWeatherInfo(),
+          CurrentWeatherInfo(onRefresh: onRefresh),
         ],
       ),
     );
@@ -56,6 +60,10 @@ class Map extends StatelessWidget {
 }
 
 class CurrentWeatherInfo extends StatelessWidget {
+  final Function onRefresh;
+
+  const CurrentWeatherInfo({@required this.onRefresh});
+
   @override
   Widget build(BuildContext context) {
     return Consumer<CurrentWeatherService>(
@@ -83,7 +91,13 @@ class CurrentWeatherInfo extends StatelessWidget {
                     children: <Widget>[
                       PopupMenuButton<String>(
                         icon: Icon(Icons.settings),
-                        onSelected: (String choice) async {},
+                        onSelected: (String choice) async {
+                          switch (choice) {
+                            case 'Refresh':
+                              onRefresh();
+                              break;
+                          }
+                        },
                         itemBuilder: (BuildContext context) {
                           return [
                             PopupMenuItem<String>(
