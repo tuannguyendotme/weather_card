@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import 'package:weather_card/services/current_weather_service.dart';
 import 'package:weather_card/services/location_service.dart';
+import 'package:weather_card/services/settings_service.dart';
 import 'package:weather_card/services/weather_forecast_service.dart';
 import 'package:weather_card/widgets/weather_forecast.dart';
 import 'package:weather_card/widgets/current_weather.dart';
@@ -35,33 +36,121 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder(
-        future: load(context),
-        builder: (context, snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.waiting:
-              return Center(
-                child: CircularProgressIndicator(),
-              );
+      body: Consumer<SettingsService>(
+        builder: (context, settingsService, child) => FutureBuilder(
+          future: load(context),
+          builder: (context, snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.waiting:
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
 
-            case ConnectionState.done:
-              return Column(
-                children: <Widget>[
-                  CurrentWeather(
-                    onRefresh: () {
-                      setState(() {});
-                    },
+              case ConnectionState.done:
+                return Column(
+                  children: <Widget>[
+                    CurrentWeather(
+                      onRefresh: () {
+                        setState(() {});
+                      },
+                      onShowSettings: showSettings,
+                    ),
+                    WeatherForecast(),
+                  ],
+                );
+
+              default:
+                return Center(
+                  child: Text('Something went wrong.'),
+                );
+            }
+          },
+        ),
+      ),
+    );
+  }
+
+  void showSettings() {
+    final settingsService =
+        Provider.of<SettingsService>(context, listen: false);
+
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => Container(
+        color: const Color.fromARGB(255, 21, 25, 33),
+        height: 200,
+        child: Container(
+          padding: EdgeInsets.all(8),
+          child: Container(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  'Settings',
+                  style: TextStyle(
+                    fontSize: 26,
                   ),
-                  WeatherForecast(),
-                ],
-              );
-
-            default:
-              return Center(
-                child: Text('Something went wrong.'),
-              );
-          }
-        },
+                ),
+                SizedBox(height: 8),
+                Text(
+                  'Unit',
+                  style: TextStyle(
+                    fontSize: 18,
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.only(left: 10, right: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        "Celsius",
+                      ),
+                      Radio(
+                        value: 'metric',
+                        groupValue: settingsService.value.unit,
+                        onChanged: (value) {
+                          settingsService.saveUnit(value);
+                          Navigator.of(context).pop();
+                        },
+                      )
+                    ],
+                  ),
+                ),
+                Divider(
+                  color: Colors.grey,
+                  height: 1,
+                ),
+                Container(
+                  padding: EdgeInsets.only(left: 10, right: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        "Fahrenheit",
+                      ),
+                      Radio(
+                        value: '',
+                        groupValue: settingsService.value.unit,
+                        onChanged: (value) {
+                          settingsService.saveUnit(value);
+                          Navigator.of(context).pop();
+                        },
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          decoration: BoxDecoration(
+            color: Theme.of(context).canvasColor,
+            borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(10),
+              topRight: const Radius.circular(10),
+            ),
+          ),
+        ),
       ),
     );
   }

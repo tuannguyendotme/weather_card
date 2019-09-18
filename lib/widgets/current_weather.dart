@@ -9,11 +9,16 @@ import 'package:weather_card/.env.dart';
 import 'package:weather_card/helpers/ui_helper.dart';
 import 'package:weather_card/services/current_weather_service.dart';
 import 'package:weather_card/services/location_service.dart';
+import 'package:weather_card/services/settings_service.dart';
 
 class CurrentWeather extends StatelessWidget {
   final Function onRefresh;
+  final Function onShowSettings;
 
-  const CurrentWeather({@required this.onRefresh});
+  const CurrentWeather({
+    @required this.onRefresh,
+    @required this.onShowSettings,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +29,10 @@ class CurrentWeather extends StatelessWidget {
           Container(
             color: Color.fromARGB(50, 45, 55, 72),
           ),
-          CurrentWeatherInfo(onRefresh: onRefresh),
+          CurrentWeatherInfo(
+            onRefresh: onRefresh,
+            onShowSettings: onShowSettings,
+          ),
         ],
       ),
     );
@@ -61,13 +69,17 @@ class Map extends StatelessWidget {
 
 class CurrentWeatherInfo extends StatelessWidget {
   final Function onRefresh;
+  final Function onShowSettings;
 
-  const CurrentWeatherInfo({@required this.onRefresh});
+  const CurrentWeatherInfo({
+    @required this.onRefresh,
+    @required this.onShowSettings,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<CurrentWeatherService>(
-      builder: (context, currentWeatherService, child) {
+    return Consumer2<CurrentWeatherService, SettingsService>(
+      builder: (context, currentWeatherService, settingsService, child) {
         final currentWeather = currentWeatherService.value;
 
         return Container(
@@ -96,6 +108,10 @@ class CurrentWeatherInfo extends StatelessWidget {
                             case 'Refresh':
                               onRefresh();
                               break;
+
+                            case 'Settings':
+                              onShowSettings();
+                              break;
                           }
                         },
                         itemBuilder: (BuildContext context) {
@@ -111,10 +127,6 @@ class CurrentWeatherInfo extends StatelessWidget {
                           ];
                         },
                       ),
-                      // IconButton(
-                      //   icon: Icon(Icons.settings),
-                      //   onPressed: () {},
-                      // ),
                       Text(
                         DateFormat('EEEEE').format(currentWeather.date),
                         style: TextStyle(
@@ -165,7 +177,7 @@ class CurrentWeatherInfo extends StatelessWidget {
                     height: 20,
                   ),
                   Text(
-                    '${currentWeather.temprature}°C',
+                    '${currentWeather.temprature}°${settingsService.value.unit == 'metric' ? 'C' : 'F'}',
                     style: TextStyle(
                       fontSize: 48,
                       fontWeight: FontWeight.bold,
