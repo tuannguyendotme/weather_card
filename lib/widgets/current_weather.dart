@@ -84,16 +84,16 @@ class CurrentWeatherInfo extends StatelessWidget {
 
         return Container(
           padding: EdgeInsets.only(
-            right: 16,
+            left: 16,
             top: 16,
             bottom: 16,
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   SizedBox(
                     height: 30,
@@ -101,6 +101,13 @@ class CurrentWeatherInfo extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
+                      Text(
+                        DateFormat('EEEEE').format(currentWeather.date),
+                        style: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                       PopupMenuButton<String>(
                         icon: Icon(Icons.settings),
                         onSelected: (String choice) async {
@@ -127,14 +134,6 @@ class CurrentWeatherInfo extends StatelessWidget {
                           ];
                         },
                       ),
-                      Text(
-                        DateFormat('EEEEE').format(currentWeather.date),
-                        style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                          //color: Colors.blueGrey,
-                        ),
-                      ),
                     ],
                   ),
                   Text(
@@ -149,7 +148,6 @@ class CurrentWeatherInfo extends StatelessWidget {
                     height: 8,
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
                       Icon(Icons.location_on),
                       Text(
@@ -164,14 +162,11 @@ class CurrentWeatherInfo extends StatelessWidget {
                 ],
               ),
               Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(right: 28),
-                    child: Icon(
-                      UiHelper.getIconData(currentWeather.icon),
-                      size: 70,
-                    ),
+                  Icon(
+                    UiHelper.getIconData(currentWeather.icon),
+                    size: 70,
                   ),
                   SizedBox(
                     height: 20,
