@@ -99,64 +99,58 @@ class _WeatherForecastState extends State<WeatherForecast> {
               width: 366,
               height: 140,
               child: Consumer<SettingsService>(
-                builder: (context, settingsService, child) => ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: weatherForecastService.items.length,
-                    itemBuilder: (context, index) {
-                      final forecastItem = weatherForecastService.items[index];
-                      final backgroundColor = _currentIndex == index
-                          ? Colors.white
-                          : Color.fromARGB(255, 26, 32, 44);
-                      final foregroundColor =
-                          _currentIndex == index ? Colors.black : Colors.white;
+                builder: (context, settingsService, child) =>
+                    ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: weatherForecastService.items.length,
+                  itemBuilder: (context, index) {
+                    final forecastItem = weatherForecastService.items[index];
+                    final backgroundColor = _currentIndex == index
+                        ? Colors.white
+                        : Color.fromARGB(255, 26, 32, 44);
+                    final foregroundColor =
+                        _currentIndex == index ? Colors.black : Colors.white;
 
-                      return GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _currentIndex = index;
-                          });
-                        },
-                        child: Row(
+                    return GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _currentIndex = index;
+                        });
+                      },
+                      child: Container(
+                        width: 86,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          color: backgroundColor,
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            Container(
-                              width: 86,
-                              decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10)),
-                                color: backgroundColor,
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Icon(
-                                    UiHelper.getIconData(forecastItem.icon),
-                                    color: foregroundColor,
-                                  ),
-                                  SizedBox(height: 10),
-                                  Text(
-                                    DateFormat('EEE, hh a')
-                                        .format(forecastItem.date),
-                                    style: TextStyle(color: foregroundColor),
-                                  ),
-                                  SizedBox(height: 6),
-                                  Text(
-                                    '${forecastItem.temprature}°${settingsService.value.unit == 'metric' ? 'C' : 'F'}',
-                                    style: TextStyle(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold,
-                                      color: foregroundColor,
-                                    ),
-                                  ),
-                                ],
-                              ),
+                            Icon(
+                              UiHelper.getIconData(forecastItem.icon),
+                              color: foregroundColor,
                             ),
-                            SizedBox(
-                              width: 2,
+                            SizedBox(height: 10),
+                            Text(
+                              DateFormat('EEE, hh a').format(forecastItem.date),
+                              style: TextStyle(color: foregroundColor),
+                            ),
+                            SizedBox(height: 6),
+                            Text(
+                              '${forecastItem.temprature}°${settingsService.value.unit == 'metric' ? 'C' : 'F'}',
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                color: foregroundColor,
+                              ),
                             ),
                           ],
                         ),
-                      );
-                    }),
+                      ),
+                    );
+                  },
+                  separatorBuilder: (context, index) => SizedBox(width: 2),
+                ),
               ),
             ),
           ],
