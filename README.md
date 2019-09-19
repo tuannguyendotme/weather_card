@@ -1,16 +1,24 @@
-# weather_card
+# Weather Card
 
-A new Flutter project.
+Display current weather information with map of current location and weather forecast of current location.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+This weather app is implemented using Flutter and Provider package.
 
-A few resources to get you started if this is your first Flutter project:
+Features:
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+- Display current weather information
+- Display weather forecast
+- Display map of current location
+- Switch from metric unit to imperial unit and vice versa
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![UI](UI.png?raw=true)
+
+To get start, run below command in Terminal
+
+```
+cp .env.example.dart .env.dart
+```
+
+then add Open Weather Map's API key and MapBox's API key to .env.dart.
