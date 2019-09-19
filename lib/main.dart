@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,6 +12,8 @@ import 'package:weather_card/services/storage_service.dart';
 import 'package:weather_card/services/weather_forecast_service.dart';
 
 void main() async {
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
   final prefs = await SharedPreferences.getInstance();
   runApp(MyApp(prefs));
 }
