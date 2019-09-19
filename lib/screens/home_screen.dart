@@ -130,7 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         "Fahrenheit",
                       ),
                       Radio(
-                        value: '',
+                        value: 'imperial',
                         groupValue: settingsService.value.unit,
                         onChanged: (value) {
                           settingsService.saveUnit(value);
