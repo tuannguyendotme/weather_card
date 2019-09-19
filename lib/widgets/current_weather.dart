@@ -60,6 +60,22 @@ class Map extends StatelessWidget {
                 'id': 'mapbox.streets',
               },
             ),
+            new MarkerLayerOptions(
+              markers: [
+                new Marker(
+                  width: 80.0,
+                  height: 80.0,
+                  point: LatLng(position.latitude, position.longitude),
+                  builder: (ctx) => new Container(
+                    child: Icon(
+                      Icons.location_on,
+                      color: Colors.red,
+                      size: 40,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ],
         );
       },

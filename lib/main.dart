@@ -61,6 +61,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Weather Card',
         home: HomeScreen(),
+        debugShowCheckedModeBanner: false,
       ),
     );
   }
