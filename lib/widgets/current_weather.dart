@@ -12,29 +12,16 @@ import 'package:weather_card/services/location_service.dart';
 import 'package:weather_card/services/settings_service.dart';
 
 class CurrentWeather extends StatelessWidget {
-  final Function onRefresh;
-  final Function onShowSettings;
-
-  const CurrentWeather({
-    @required this.onRefresh,
-    @required this.onShowSettings,
-  });
-
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Stack(
-        children: <Widget>[
-          Map(),
-          Container(
-            color: Color.fromARGB(50, 45, 55, 72),
-          ),
-          CurrentWeatherInfo(
-            onRefresh: onRefresh,
-            onShowSettings: onShowSettings,
-          ),
-        ],
-      ),
+    return Stack(
+      children: <Widget>[
+        Map(),
+        Container(
+          color: Color.fromARGB(50, 45, 55, 72),
+        ),
+        CurrentWeatherInfo(),
+      ],
     );
   }
 }
@@ -84,13 +71,7 @@ class Map extends StatelessWidget {
 }
 
 class CurrentWeatherInfo extends StatelessWidget {
-  final Function onRefresh;
-  final Function onShowSettings;
-
-  const CurrentWeatherInfo({
-    @required this.onRefresh,
-    @required this.onShowSettings,
-  });
+  const CurrentWeatherInfo();
 
   @override
   Widget build(BuildContext context) {
@@ -114,43 +95,12 @@ class CurrentWeatherInfo extends StatelessWidget {
                   SizedBox(
                     height: 30,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                        DateFormat('EEEEE').format(currentWeather.date),
-                        style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      PopupMenuButton<String>(
-                        icon: Icon(Icons.settings),
-                        onSelected: (String choice) async {
-                          switch (choice) {
-                            case 'Refresh':
-                              onRefresh();
-                              break;
-
-                            case 'Settings':
-                              onShowSettings();
-                              break;
-                          }
-                        },
-                        itemBuilder: (BuildContext context) {
-                          return [
-                            PopupMenuItem<String>(
-                              value: 'Refresh',
-                              child: const Text('Refresh'),
-                            ),
-                            PopupMenuItem<String>(
-                              value: 'Settings',
-                              child: const Text('Settings'),
-                            ),
-                          ];
-                        },
-                      ),
-                    ],
+                  Text(
+                    DateFormat('EEEEE').format(currentWeather.date),
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   Text(
                     DateFormat('dd MMM yyyy').format(currentWeather.date),

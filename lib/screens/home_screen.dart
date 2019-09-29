@@ -49,11 +49,42 @@ class _HomeScreenState extends State<HomeScreen> {
               case ConnectionState.done:
                 return Column(
                   children: <Widget>[
-                    CurrentWeather(
-                      onRefresh: () {
-                        setState(() {});
-                      },
-                      onShowSettings: showSettings,
+                    Expanded(
+                      child: Stack(
+                        children: <Widget>[
+                          CurrentWeather(),
+                          Positioned(
+                            top: 36,
+                            right: 8,
+                            child: PopupMenuButton<String>(
+                              icon: Icon(Icons.settings),
+                              onSelected: (String choice) async {
+                                switch (choice) {
+                                  case 'Refresh':
+                                    setState(() {});
+                                    break;
+
+                                  case 'Settings':
+                                    showSettings();
+                                    break;
+                                }
+                              },
+                              itemBuilder: (BuildContext context) {
+                                return [
+                                  PopupMenuItem<String>(
+                                    value: 'Refresh',
+                                    child: const Text('Refresh'),
+                                  ),
+                                  PopupMenuItem<String>(
+                                    value: 'Settings',
+                                    child: const Text('Settings'),
+                                  ),
+                                ];
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     WeatherForecast(),
                   ],
